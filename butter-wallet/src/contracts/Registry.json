@@ -1,0 +1,45 @@
+{
+  "contractName": "Registry contract",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "vaultAddress",
+          "type": "address"
+        }
+      ],
+      "name": "addVaultToUser",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "vaultMapping",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+
+  "networks": {
+    "80001": {
+      "events": {},
+      "links": {},
+      "address": "0x9E69bd02A4C92ae1fF9e4D0D7eB01d2d3b50b35e"
+    }
+  }
+}
