@@ -47,7 +47,7 @@ const App: React.FC = () => {
       );
 
       const contractRegistry:Dummy = new ethers.Contract(
-        '0x9E69bd02A4C92ae1fF9e4D0D7eB01d2d3b50b35e',
+        '0x152f29A3F98613b3E7598875f03575235D842027',
         Registry.abi,
         provider
       );
@@ -62,20 +62,19 @@ const App: React.FC = () => {
     const dontDo = async function(){}
 
     const loadVault = async function(){
-      console.log('loading vaultttttt');
+      console.log('loading vault...');
       console.log(registryContract);
       
       const check = await registryContract.vaultMapping(address)
-      console.log('contract calllllllllllllll');
+      console.log('contract call...');
       console.log(check);
       if(!check.startsWith('0x0000000000000000000000000000000000000000'))
-        setHasVault(true)
-      
+        setHasVault(true)      
     }
 
     const deployVault = async function(e:any) {
       e.preventDefault();
-      const vaultName = e.target.elements[0].value;
+      const vaultName = e.target.elements[0].value;    
     }
 
     const addToVault = async function(e:any) {
