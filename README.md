@@ -1,6 +1,9 @@
-# ButterVault
+# Butter
 
 This is the smoothest vault out there in the ecosystem, like the name - Smooth like 'Butter'
 
-We get users onboard with the basic necessity to get to any platform, we understood that social login is one of the most preferrable onboarding for everyone, we got you covered with the most promising web3 experience providers out there Biconomy. With ButterVault, we promise your assets inside the vault which is more secure than a regular wallet will have withdrawal time-delay with which user can block/cancel unwanted or unrecognized transaction within the set time gap. We are not done with features, we have Gas-Less transaction exclusively for the first 5 transactions with ButterVault, it's on the house.
+We get users onboard with the basic necessity to get to any platform, we understood that social login is one of the most preferrable onboarding for everyone, we got you covered with the most promising web3 experience providers out there, Biconomy. With Butter, we promise your assets are secure than a regular wallet. Our main USP will be  Gas-Less transactions, but not compromising the safety and speed for the same. We chose Polygon for deploying the contracts to get the infrastructure ready even with the minimum gas cost avoided with our contracts.
+
+Architecture
+------------
 
