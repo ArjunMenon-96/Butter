@@ -10,9 +10,10 @@ import * as ethers from "ethers";
 
 
 
-type Dummy = {
-  [key: string]: any;
-}
+type Dummy = { [key: string]: any }
+const registryContractAddress = '0x8582f3B4CFd18b8FA66A352AE25F6D2DC2A359e3'
+const butterContractAddress = '0x4b13f9dc031A77DD3C411A3D6b8e3442b05c8F0a'
+
 
 const App: React.FC = () => {
   const classes = useStyles();
@@ -43,13 +44,13 @@ const App: React.FC = () => {
       const provider:any = new ethers.providers.JsonRpcProvider(nodeProvider)
 
       const contractButter:Dummy = new ethers.Contract(
-        '0x4b13f9dc031A77DD3C411A3D6b8e3442b05c8F0a',
+        butterContractAddress,
         Butter.abi,
         provider
       );
 
       const contractRegistry:Dummy = new ethers.Contract(
-        '0x8582f3B4CFd18b8FA66A352AE25F6D2DC2A359e3',
+        registryContractAddress,
         Registry.abi,
         provider
       );
@@ -59,41 +60,36 @@ const App: React.FC = () => {
     }
     init();    
 
-    console.log(ethersProvider);
   }, []);
 
     const dontDo = async function(){}
 
     const loadVault = async function(){
-      console.log('loading vault...');
-      console.log(registryContract);
-      
       const check = await registryContract.vaultMapping(address)
-      console.log('contract call...');
-      console.log(check);
       if(!check.startsWith('0x0000000000000000000000000000000000000000'))
         setHasVault(true)      
-       }
+    }
 
     const deployVault = async function(e:any) {
       e.preventDefault();
-      const vaultName = e.target.elements[0].value;    
+      const vaultName = e.target.elements[0].value;
+      await registryContract.addVaultToUser(vaultName)
     }
 
     const addToVault = async function(e:any) {
       e.preventDefault();
       const amountInEth = e.target.elements[0].value;
-      const to = '0x4b13f9dc031A77DD3C411A3D6b8e3442b05c8F0a';
+      const to = registryContractAddress;
       await transferNative(amountInEth, to)
     }
 
-  const transferFromVault = async function(e:any) {
-    e.preventDefault();
-    const to = e.target.elements[0].value;
-    const amountInEth = e.target.elements[1].value;
-    await butterContract.sentEth(amountInEth).send({accounts:address})
-    
-  }
+    const transferFromVault = async function(e:any) {
+      e.preventDefault();
+      const to = e.target.elements[0].value;
+      const amountInEth = e.target.elements[1].value;
+      const amountInWei = ethers.utils.parseEther(amountInEth)
+      await butterContract.sentEth(amountInWei, to)
+    }
 
   const populateMyAddress = function(){
     tDefaultAddress == '' ? setTDefaultAddress(address) : setTDefaultAddress('')
