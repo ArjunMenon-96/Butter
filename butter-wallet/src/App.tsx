@@ -49,7 +49,7 @@ const App: React.FC = () => {
       );
 
       const contractRegistry:Dummy = new ethers.Contract(
-        '0x152f29A3F98613b3E7598875f03575235D842027',
+        '0x8582f3B4CFd18b8FA66A352AE25F6D2DC2A359e3',
         Registry.abi,
         provider
       );

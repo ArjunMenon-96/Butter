@@ -7,16 +7,16 @@ contract vaultRegistry {
     mapping (address => address) public vaultMapping;
     // EtherWallet[] public ethersWallet;
 
-    function deployVault() private{
-       EtherWallet _newVault = new EtherWallet("name");
+    function deployVault(string memory _vaultName) private{
+       EtherWallet _newVault = new EtherWallet(_vaultName);
     //    ethersWallet.push(_newVault);
        vaultMapping[msg.sender]= address(_newVault);
     }
 
-    function addVaultToUser() public {
+    function addVaultToUser(string memory _vaultName) public {
         require(vaultMapping[msg.sender]== address(0));
         // vaultMapping[msg.sender]= vaultAddress;
-        deployVault();
+        deployVault(_vaultName);
     }
 
 }

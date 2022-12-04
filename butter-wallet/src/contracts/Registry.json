@@ -2,7 +2,13 @@
   "contractName": "Registry contract",
   "abi":[
     {
-      "inputs": [],
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_vaultName",
+          "type": "string"
+        }
+      ],
       "name": "addVaultToUser",
       "outputs": [],
       "stateMutability": "nonpayable",
@@ -33,7 +39,7 @@
     "80001": {
       "events": {},
       "links": {},
-      "address": "0x152f29A3F98613b3E7598875f03575235D842027"
+      "address": "0x8582f3B4CFd18b8FA66A352AE25F6D2DC2A359e3"
     }
   }
 }
