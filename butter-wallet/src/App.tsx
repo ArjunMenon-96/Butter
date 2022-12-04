@@ -67,7 +67,8 @@ const App: React.FC = () => {
     const loadVault = async function(){
       const check = await registryContract.vaultMapping(address)
       if(!check.startsWith('0x0000000000000000000000000000000000000000'))
-        setHasVault(true)      
+        setHasVault(true)  
+      setVaultLoaded(true)    
     }
 
     const deployVault = async function(e:any) {
@@ -144,7 +145,7 @@ const App: React.FC = () => {
           </div>
         )}
 
-          { !hasVault && <div style={{"marginTop":"150px"}} className="row">
+          { vaultLoaded && !hasVault && <div style={{"marginTop":"150px"}} className="row">
             <div className="col-sm-8">
               <h2>Deploy a vault</h2> <br/>
               <form onSubmit={e => deployVault(e)}>
@@ -170,7 +171,7 @@ const App: React.FC = () => {
             </div>
           </div> }
 
-          {address && hasVault && <div> 
+          {address && vaultLoaded && hasVault && <div> 
             <div style={{"marginTop":"150px", "marginLeft":"80px",}} className="row">
               <div className="col-sm-8">
                 <h2>Add tokens to vault</h2> <br/>
