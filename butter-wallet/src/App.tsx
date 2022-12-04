@@ -7,10 +7,16 @@ import { useSmartAccountContext } from "./contexts/SmartAccountContext";
 import { useWeb3AuthContext, Web3AuthProvider } from "./contexts/SocialLoginContext";
 import Button from "./components/Button";
 import * as ethers from "ethers";
-
+import SmartAccount from "@biconomy/smart-account";
+import { supportedChains, activeChainId } from "./utils/chainConfig";
 
 
 type Dummy = { [key: string]: any }
+type ISmartAccount = {
+  version: string;
+  smartAccountAddress: string;
+  isDeployed: boolean;
+};
 const registryContractAddress = '0x8582f3B4CFd18b8FA66A352AE25F6D2DC2A359e3'
 const butterContractAddress = '0x4b13f9dc031A77DD3C411A3D6b8e3442b05c8F0a'
 
@@ -18,43 +24,47 @@ const butterContractAddress = '0x4b13f9dc031A77DD3C411A3D6b8e3442b05c8F0a'
 const App: React.FC = () => {
   const classes = useStyles();
   const temp:Dummy = {};
-  const temp2:Dummy = {};
+  // const temp2:ISmartAccount = {}
   const [tDefaultAddress, setTDefaultAddress] = useState('');
   const [butterContract, setButterContract] = useState(temp);
   const [registryContract, setRegistryContract] = useState(temp);
   const [hasVault, setHasVault] = useState(false);
   const [vaultLoaded, setVaultLoaded] = useState(false);
-  const [provider, setProvider] = useState(temp);
+  const [alprovider, alsetProvider] = useState(temp);
+  const [wallet, setWallet] = useState(temp);
 
   const {
     address,
     loading: eoaLoading,
     connect,
     disconnect,
-    ethersProvider
+    ethersProvider,
+    provider
   } = useWeb3AuthContext();
   const {
+    selectedAccount,
     loading: scwLoading,
     setSelectedAccount,
+    // wallet
   } = useSmartAccountContext();
 
   useEffect(() => {
     const init = async () => {
       const nodeProvider = 'https://polygon-mumbai.g.alchemy.com/v2/l5W0BrhnZRPFhU36qkFXO6Gtppdr72Zu'
-      const provider:any = new ethers.providers.JsonRpcProvider(nodeProvider)
+      const alprovider:any = new ethers.providers.JsonRpcProvider(nodeProvider)
 
       const contractButter:Dummy = new ethers.Contract(
         butterContractAddress,
         Butter.abi,
-        provider
+        alprovider
       );
 
       const contractRegistry:Dummy = new ethers.Contract(
         registryContractAddress,
         Registry.abi,
-        provider
+        alprovider
       );
-      setProvider(provider)
+      alsetProvider(alprovider)
       setButterContract(contractButter);
       setRegistryContract(contractRegistry);
     }
@@ -68,13 +78,47 @@ const App: React.FC = () => {
       const check = await registryContract.vaultMapping(address)
       if(!check.startsWith('0x0000000000000000000000000000000000000000'))
         setHasVault(true)  
+
+      const walletProvider = new ethers.providers.Web3Provider(provider);
+      console.log("walletProvider", walletProvider);
+      // New instance, all config params are optional
+      const wallet = new SmartAccount(walletProvider, {
+        activeNetworkId: activeChainId,
+        supportedNetworksIds: supportedChains,
+        networkConfig: [
+          {
+            chainId: 80001,
+            dappAPIKey: "59fRCMXvk.8a1652f0-b522-4ea7-b296-98628499aee3",
+          }
+        ],
+      });
+      console.log("wallet", wallet);
+
       setVaultLoaded(true)    
+      setWallet(wallet)
     }
 
     const deployVault = async function(e:any) {
       e.preventDefault();
+      console.log('tryong to delkgt');
+
+      console.log(wallet);
       const vaultName = e.target.elements[0].value;
-      await registryContract.addVaultToUser(vaultName)
+
+      const dappInterface = new ethers.utils.Interface(Registry.abi);
+      debugger;
+      const data1 = dappInterface.encodeFunctionData(
+        'addVaultToUser', [vaultName]
+      )
+      const tx1 = {
+        to: registryContractAddress,
+        data: data1
+      }
+      const txns = [tx1]
+
+      const response = await wallet?.sendGaslessTransactionBatch({ transactions: txns })
+      debugger
+      // await registryContract.addVaultToUser(vaultName)
     }
 
     const addToVault = async function(e:any) {
