@@ -4,9 +4,11 @@ import Butter from './contracts/Butter.json';
 import Registry from './contracts/Registry.json';
 import { makeStyles } from "@material-ui/core/styles";
 import { useSmartAccountContext } from "./contexts/SmartAccountContext";
-import { useWeb3AuthContext } from "./contexts/SocialLoginContext";
+import { useWeb3AuthContext, Web3AuthProvider } from "./contexts/SocialLoginContext";
 import Button from "./components/Button";
 import * as ethers from "ethers";
+
+
 
 type Dummy = {
   [key: string]: any;
@@ -14,8 +16,8 @@ type Dummy = {
 
 const App: React.FC = () => {
   const classes = useStyles();
-  const temp:Dummy = {}
-  const temp2:Dummy = {}
+  const temp:Dummy = {};
+  const temp2:Dummy = {};
   const [tDefaultAddress, setTDefaultAddress] = useState('');
   const [butterContract, setButterContract] = useState(temp);
   const [registryContract, setRegistryContract] = useState(temp);
@@ -28,6 +30,7 @@ const App: React.FC = () => {
     loading: eoaLoading,
     connect,
     disconnect,
+    ethersProvider
   } = useWeb3AuthContext();
   const {
     loading: scwLoading,
@@ -36,7 +39,6 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const init = async () => {
-
       const nodeProvider = 'https://polygon-mumbai.g.alchemy.com/v2/l5W0BrhnZRPFhU36qkFXO6Gtppdr72Zu'
       const provider:any = new ethers.providers.JsonRpcProvider(nodeProvider)
 
@@ -55,8 +57,9 @@ const App: React.FC = () => {
       setButterContract(contractButter);
       setRegistryContract(contractRegistry);
     }
-    init();
-    
+    init();    
+
+    console.log(ethersProvider);
   }, []);
 
     const dontDo = async function(){}
@@ -70,7 +73,7 @@ const App: React.FC = () => {
       console.log(check);
       if(!check.startsWith('0x0000000000000000000000000000000000000000'))
         setHasVault(true)      
-    }
+       }
 
     const deployVault = async function(e:any) {
       e.preventDefault();
@@ -80,7 +83,7 @@ const App: React.FC = () => {
     const addToVault = async function(e:any) {
       e.preventDefault();
       const amountInEth = e.target.elements[0].value;
-      const to = '0x4b13f9dc031A77DD3C411A3D6b8e3442b05c8F0a'
+      const to = '0x4b13f9dc031A77DD3C411A3D6b8e3442b05c8F0a';
       await transferNative(amountInEth, to)
     }
 

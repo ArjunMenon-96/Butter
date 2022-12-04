@@ -90,11 +90,7 @@ export const SmartAccountProvider = ({ children }: any) => {
           {
             chainId: ChainId.POLYGON_MUMBAI,
             dappAPIKey: "59fRCMXvk.8a1652f0-b522-4ea7-b296-98628499aee3",
-          },
-          {
-            chainId: ChainId.POLYGON_MAINNET,
-            // dappAPIKey: todo
-          },
+          }
         ],
       });
       console.log("wallet", wallet);
